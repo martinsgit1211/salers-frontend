@@ -13,8 +13,8 @@ function WholesalerLogin() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f] text-white p-4">
-      <div className="w-full max-w-md">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+             <div className="rounded-2xl shadow-lg max-w-md w-full">
         <form
           onSubmit={handleLogin}
           className="bg-[#1a1a1a] p-6 sm:p-8 rounded-lg shadow-lg w-full"

@@ -15,8 +15,8 @@ function ManufacturerRegister() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#0f0f0f] text-white p-4">
-      <div className="w-full sm:w-full md:w-2/3 lg:w-1/2 xl:w-1/3 max-w-lg mx-auto">
+    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+             <div className="rounded-2xl shadow-lg max-w-md w-full">
         <form
           onSubmit={handleRegister}
           className="bg-[#1a1a1a] p-5 sm:p-6 md:p-8 rounded-lg shadow-lg w-full"
