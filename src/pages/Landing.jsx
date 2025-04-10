@@ -1,4 +1,3 @@
-// pages/Landing.jsx
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import illustration from "../assets/ChatGPT Image Apr 10, 2025, 12_20_10 PM.png";

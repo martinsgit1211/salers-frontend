@@ -3,14 +3,18 @@ import { Link } from "react-router-dom";
 import { Factory, Package, ShoppingCart, User } from "lucide-react";
 
 function Sidebar({ role }) {
-  const links = {
-    manufacturer: [
-      { label: "My Products", icon: <Package size={18} />, to: "/manufacturer/products" },
-      { label: "Orders", icon: <ShoppingCart size={18} />, to: "/manufacturer/orders" },
-      { label: "Profile", icon: <User size={18} />, to: "/manufacturer/profile" },
-    ],
-    // Add for admin/wholesaler later
-  };
+    const links = {
+        manufacturer: [
+          { label: "My Products", icon: <Package size={18} />, to: "/manufacturer/products" },
+          { label: "Orders", icon: <ShoppingCart size={18} />, to: "/manufacturer/orders" },
+          { label: "Profile", icon: <User size={18} />, to: "/manufacturer/profile" },
+        ],
+        wholesaler: [
+          { label: "Browse Products", icon: <Package size={18} />, to: "/wholesaler/products" },
+          { label: "My Orders", icon: <ShoppingCart size={18} />, to: "/wholesaler/orders" },
+          { label: "Profile", icon: <User size={18} />, to: "/wholesaler/profile" },
+        ],
+      };      
 
   return (
     <div className="w-64 bg-[#1a1a1a] min-h-screen px-6 py-8">
