@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Nav from '../../components/Nav';
 
 function WholesalerRegister() {
   const [businessName, setBusinessName] = useState("");
@@ -15,7 +16,9 @@ function WholesalerRegister() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <>
+    <Nav/>
+    <div className="inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
              <div className="rounded-2xl shadow-lg max-w-md w-full">
         <form
           onSubmit={handleRegister}
@@ -85,20 +88,21 @@ function WholesalerRegister() {
 
           <button
             type="submit"
-            className="w-full bg-white text-black py-2 rounded hover:bg-gray-200 font-semibold transition"
+            className="w-full bg-yellow-400 text-black py-2 rounded hover:bg-gray-200 font-semibold transition"
           >
             Register
           </button>
           
           <p className="mt-4 text-center text-xs sm:text-sm">
             Already have an account?{" "}
-            <Link to="/wholesaler/login" className="text-white hover:underline">
+            <Link to="/wholesaler/login" className="text-yellow-400 hover:underline">
               Login here
             </Link>
           </p>
         </form>
       </div>
     </div>
+    </>
   );
 }
 

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import Nav from '../../components/Nav';
 
 function ManufacturerRegister() {
   const [companyName, setCompanyName] = useState("");
@@ -14,7 +15,9 @@ function ManufacturerRegister() {
   };
 
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
+    <>
+    <Nav/>
+    <div className="inset-0 bg-black bg-opacity-50 flex items-center justify-center p-4">
              <div className="rounded-2xl shadow-lg max-w-md w-full">
         <form
           onSubmit={handleRegister}
@@ -82,6 +85,7 @@ function ManufacturerRegister() {
         </form>
       </div>
     </div>
+    </>
   );
 }
 
