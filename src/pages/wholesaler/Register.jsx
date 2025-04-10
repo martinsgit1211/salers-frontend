@@ -21,7 +21,7 @@ function WholesalerRegister() {
           onSubmit={handleRegister}
           className="bg-[#1a1a1a] p-6 sm:p-8 rounded-lg shadow-lg w-full"
         >
-          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Wholesaler Registration</h2>
+          <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Wholesaler <span className="text-yellow-400">Registration</span></h2>
           
           <div className="mb-4">
             <label className="block mb-1 text-sm sm:text-base">Business Name</label>

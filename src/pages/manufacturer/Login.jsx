@@ -19,7 +19,7 @@ function ManufacturerLogin() {
           onSubmit={handleLogin}
           className="bg-[#1a1a1a] p-5 sm:p-6 md:p-8 rounded-lg shadow-lg w-full"
         >
-          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-center">Manufacturer Login</h2>
+          <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-center">Manufacturer <span className="text-yellow-400">Login</span> </h2>
           <div className="mb-3 sm:mb-4">
             <label className="block mb-1 text-sm sm:text-base">Email</label>
             <input

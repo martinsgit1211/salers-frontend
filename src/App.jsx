@@ -6,6 +6,7 @@ import ManufacturerLogin from "./pages/manufacturer/Login";
 import WholesalerLogin from "./pages/wholesaler/Login";
 import ManufacturerProducts from "./pages/manufacturer/ManufacturerProducts";
 import WholesalerProducts from "./pages/wholesaler/WholesalerProducts.jsx";
+import Cart from "./pages/wholesaler/Cart";
 import Profile from "./pages/shared/Profile";
 import Landing from "./pages/Landing";
 
@@ -23,6 +24,7 @@ function App() {
         <Route path="/wholesaler/products" element={<WholesalerProducts />}/>
         <Route path="/manufacturer/profile" element={<Profile role="Manufacturer" />} />
         <Route path="/wholesaler/profile" element={<Profile role="Wholesaler" />} />
+        <Route path="/wholesaler/cart" element={<Cart />} />
       </Routes>
     </Router>
   );
