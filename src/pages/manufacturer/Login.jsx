@@ -19,7 +19,7 @@ function ManufacturerLogin() {
         email,
         password,
       });
-  
+      
       const { token, user } = res.data;
   
       // Store token and user info

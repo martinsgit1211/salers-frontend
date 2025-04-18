@@ -10,7 +10,7 @@ import WholesalerOrders from "./pages/wholesaler/WholesalerOrders";
 import Cart from "./pages/wholesaler/Cart";
 import Profile from "./pages/shared/Profile";
 import Landing from "./pages/Landing";
-
+import ProtectedRoute from "./routes/ProtectedRoutes.jsx";
 
 function App() {
   return (
