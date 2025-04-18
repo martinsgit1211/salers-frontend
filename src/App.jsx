@@ -16,17 +16,66 @@ function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<Landing />} />
+      <Route path="/" element={<Landing />} />
         <Route path="/manufacturer/register" element={<ManufacturerRegister />} />
         <Route path="/wholesaler/register" element={<WholesalerRegister />} />
         <Route path="/manufacturer/login" element={<ManufacturerLogin />} />
         <Route path="/wholesaler/login" element={<WholesalerLogin />} />
-        <Route path="/manufacturer/products" element={<ManufacturerProducts />} />
-        <Route path="/wholesaler/products" element={<WholesalerProducts />}/>
-        <Route path="/manufacturer/profile" element={<Profile role="Manufacturer" />} />
-        <Route path="/wholesaler/profile" element={<Profile role="Wholesaler" />} />
-        <Route path="/wholesaler/cart" element={<Cart />} />
-        <Route path="/wholesaler/orders" element={<WholesalerOrders />} />
+
+        {/* Protected Routes */}
+        <Route
+          path="/manufacturer/products"
+          element={
+            <ProtectedRoute userType="Manufacturer">
+              <ManufacturerProducts />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/manufacturer/profile"
+          element={
+            <ProtectedRoute userType="Manufacturer">
+              <Profile role="Manufacturer" />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/wholesaler/products"
+          element={
+            <ProtectedRoute userType="Wholesaler">
+              <WholesalerProducts />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/wholesaler/cart"
+          element={
+            <ProtectedRoute userType="Wholesaler">
+              <Cart />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/wholesaler/orders"
+          element={
+            <ProtectedRoute userType="Wholesaler">
+              <WholesalerOrders />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/wholesaler/profile"
+          element={
+            <ProtectedRoute userType="Wholesaler">
+              <Profile role="Wholesaler" />
+            </ProtectedRoute>
+          }
+        />
       </Routes>
     </Router>
   );

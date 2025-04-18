@@ -21,7 +21,7 @@ function ManufacturerRegister() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5173/manufacturer/register", {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
         name: companyName,
         email,
         password,

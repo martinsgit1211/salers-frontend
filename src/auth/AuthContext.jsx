@@ -1,12 +1,38 @@
+// src/context/AuthContext.jsx
 import React, { createContext, useState, useEffect } from "react";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null); // store manufacturer or wholesaler
+  const [user, setUser] = useState(null); // {role: 'Manufacturer' or 'Wholesaler', ...}
   const [cart, setCart] = useState([]);
 
-  // Add to cart
+  // Initialize user from localStorage token (if any)
+  useEffect(() => {
+    const tokenM = localStorage.getItem("ManufacturerToken");
+    const tokenW = localStorage.getItem("WholesalerToken");
+
+    if (tokenM) {
+      setUser({ role: "Manufacturer", token: tokenM });
+    } else if (tokenW) {
+      setUser({ role: "Wholesaler", token: tokenW });
+    }
+  }, []);
+
+  // Auth Actions
+  const login = (userType, token) => {
+    localStorage.setItem(`${userType}Token`, token);
+    setUser({ role: userType, token });
+  };
+
+  const logout = () => {
+    localStorage.removeItem("ManufacturerToken");
+    localStorage.removeItem("WholesalerToken");
+    setUser(null);
+    setCart([]);
+  };
+
+  // Cart Logic
   const addToCart = (product, quantity = 1) => {
     setCart((prev) => {
       const exists = prev.find((item) => item.product._id === product._id);
@@ -22,7 +48,6 @@ export const AuthProvider = ({ children }) => {
     });
   };
 
-  // Remove from cart
   const removeFromCart = (productId) => {
     setCart((prev) => prev.filter((item) => item.product._id !== productId));
   };
@@ -33,9 +58,9 @@ export const AuthProvider = ({ children }) => {
     <AuthContext.Provider
       value={{
         user,
-        setUser,
+        login,
+        logout,
         cart,
-        setCart,
         addToCart,
         removeFromCart,
         clearCart,
@@ -45,3 +70,6 @@ export const AuthProvider = ({ children }) => {
     </AuthContext.Provider>
   );
 };
+
+export const useAuth = () => useContext(AuthContext);
+export default AuthProvider;

@@ -1,15 +1,37 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import Nav from '../../components/Nav';
+import axiosInstance from "../../utils/axiosInstance";
+import { AuthContext } from "../../auth/AuthContext";
 
 function WholesalerLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
 
-  const handleLogin = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
     // TODO: Handle login logic here
     console.log("Login as Wholesaler:", { email, password });
+    try {
+      const res = await axiosInstance.post('http://localhost:5000/api/wholesaler/login', {
+        email,
+        password,
+      });
+  
+      const { token, user } = res.data;
+  
+      // Store token and user info
+      localStorage.setItem('wholesalerToken', token);
+      localStorage.setItem('wholesalerUser', JSON.stringify(user));
+      
+      login("Wholesaler", token); // Update the AuthContext with the logged-in user
+
+      navigate('/wholesaler/dashboard');
+    } catch (err) {
+      console.error('Login error:', err.response?.data?.message || err.message);
+    }
   };
 
   return (

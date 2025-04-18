@@ -9,10 +9,30 @@ function WholesalerRegister() {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [businessType, setBusinessType] = useState("");
 
-  const handleRegister = (e) => {
+  const handleRegister = async (e) => {
     e.preventDefault();
     // TODO: Handle registration logic here
     console.log("Register as Wholesaler:", { businessName, email, password, businessType });
+
+    if (password !== confirmPassword) {
+      setError("Passwords do not match");
+      return;
+    }
+
+    try {
+      const res = await axios.post("http://localhost:5000/api/auth/register", {
+        name: businessName,
+        email,
+        password,
+        role: "wholesaler",
+      });
+
+      console.log("Registration successful:", res.data);
+      navigate("/wholesaler/login");
+    } catch (err) {
+      console.error(err);
+      setError(err.response?.data?.message || "Something went wrong");
+    }
   };
 
   return (
