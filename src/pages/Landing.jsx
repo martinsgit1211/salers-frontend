@@ -87,7 +87,7 @@ function Landing() {
       </main>
           
         {/* About & Contact Section */}
-     <AboutContact/>
+        <AboutContact/>
         {/* Footer Section */}
         <Footer/>
     </div>

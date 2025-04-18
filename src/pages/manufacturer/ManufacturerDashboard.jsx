@@ -19,7 +19,7 @@ function ManufacturerDashboard() {
             Welcome back, Manufacturer 👋
           </h2>
           <p className="text-gray-400">Here's your dashboard overview.</p>
-          {/* You can add summary cards or stats here later */}
+          {/* Add summary cards or stats here later */}
         </main>
       </div>
     </div>

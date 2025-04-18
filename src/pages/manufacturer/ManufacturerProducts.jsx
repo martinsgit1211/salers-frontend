@@ -7,7 +7,7 @@ function ManufacturerProducts() {
 
   const handleAddProduct = (data) => {
     console.log("Product Data:", data);
-    // ✅ Integrate with backend API later
+    // Integrate with backend API later
   };
 
   return (

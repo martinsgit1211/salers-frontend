@@ -6,7 +6,6 @@ import ManufacturerLogin from "./pages/manufacturer/Login";
 import WholesalerLogin from "./pages/wholesaler/Login";
 import ManufacturerProducts from "./pages/manufacturer/ManufacturerProducts";
 import WholesalerProducts from "./pages/wholesaler/WholesalerProducts.jsx";
-// import ManufacturerOrders from "./pages/manufacturer/ManufacturerOrders";
 import WholesalerOrders from "./pages/wholesaler/WholesalerOrders";
 import Cart from "./pages/wholesaler/Cart";
 import Profile from "./pages/shared/Profile";
