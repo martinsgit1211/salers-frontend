@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Nav from "../../components/Nav";
 
 function ManufacturerRegister() {
+  useEffect(() => {
+      const originalTitle = document.title;
+      document.title = "Manufacturer|SignUp";
+      return () => {
+        document.title = originalTitle;
+      };
+    }, []);
   const navigate = useNavigate();
 
   const [companyName, setCompanyName] = useState("");

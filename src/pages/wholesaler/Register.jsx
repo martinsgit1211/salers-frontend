@@ -1,8 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import Nav from '../../components/Nav';
 
 function WholesalerRegister() {
+  useEffect(() => {
+      const originalTitle = document.title;
+      document.title = "Wholesaler|SignUp";
+      return () => {
+        document.title = originalTitle;
+      };
+    }, []);
   const [businessName, setBusinessName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");

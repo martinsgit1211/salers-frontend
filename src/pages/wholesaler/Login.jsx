@@ -1,10 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Nav from '../../components/Nav';
 import axiosInstance from "../../utils/axiosInstance";
 import { AuthContext } from "../../auth/AuthContext";
 
 function WholesalerLogin() {
+  useEffect(() => {
+    const originalTitle = document.title;
+    document.title = "Wholesaler|Login";
+    return () => {
+      document.title = originalTitle;
+    };
+  }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -15,7 +22,7 @@ function WholesalerLogin() {
     // TODO: Handle login logic here
     console.log("Login as Wholesaler:", { email, password });
     try {
-      const res = await axiosInstance.post('http://localhost:5000/api/wholesaler/login', {
+      const res = await axiosInstance.post('http://localhost:5000/api/auth/wholesaler/login', {
         email,
         password,
       });

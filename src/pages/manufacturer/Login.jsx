@@ -1,10 +1,17 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext , useEffect} from "react";
 import { Link , useNavigate} from "react-router-dom";
 import Nav from '../../components/Nav'
 import axiosInstance from "../../utils/axiosInstance";
 import { AuthContext } from "../../auth/AuthContext";
 
 function ManufacturerLogin() {
+  useEffect(() => {
+      const originalTitle = document.title;
+      document.title = "Manufacturer|Login";
+      return () => {
+        document.title = originalTitle;
+      };
+    }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
@@ -12,10 +19,10 @@ function ManufacturerLogin() {
 
   const handleLogin = async (e) => {
     e.preventDefault();
-    // TODO: Handle login logic here
+
     console.log("Login as Manufacturer:", { email, password });
     try {
-      const res = await axiosInstance.post('http://localhost:5000/api/manufacturer/login', {
+      const res = await axiosInstance.post('http://localhost:5000/api/auth/manufacturer/login', {
         email,
         password,
       });
