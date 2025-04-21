@@ -7,6 +7,8 @@ import WholesalerLogin from "./pages/wholesaler/Login";
 import ManufacturerProducts from "./pages/manufacturer/ManufacturerProducts";
 import WholesalerProducts from "./pages/wholesaler/WholesalerProducts.jsx";
 import WholesalerOrders from "./pages/wholesaler/WholesalerOrders";
+import ManufacturerDashboard from "./pages/manufacturer/ManufacturerDashboard";
+import WholesalerDashboard from "./pages/wholesaler/WholesalerDashboard";
 import Cart from "./pages/wholesaler/Cart";
 import Profile from "./pages/shared/Profile";
 import Landing from "./pages/Landing";
@@ -16,7 +18,7 @@ function App() {
   return (
     <Router>
       <Routes>
-      <Route path="/" element={<Landing />} />
+        <Route path="/" element={<Landing />} />
         <Route path="/manufacturer/register" element={<ManufacturerRegister />} />
         <Route path="/wholesaler/register" element={<WholesalerRegister />} />
         <Route path="/manufacturer/login" element={<ManufacturerLogin />} />
@@ -26,7 +28,7 @@ function App() {
         <Route
           path="/manufacturer/products"
           element={
-            <ProtectedRoute userType="Manufacturer">
+            <ProtectedRoute userType="manufacturer">
               <ManufacturerProducts />
             </ProtectedRoute>
           }
@@ -35,8 +37,17 @@ function App() {
         <Route
           path="/manufacturer/profile"
           element={
-            <ProtectedRoute userType="Manufacturer">
+            <ProtectedRoute userType="manufacturer">
               <Profile role="Manufacturer" />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/manufacturer/dashboard"
+          element={
+            <ProtectedRoute userType="manufacturer">
+              <ManufacturerDashboard />
             </ProtectedRoute>
           }
         />
@@ -44,7 +55,7 @@ function App() {
         <Route
           path="/wholesaler/products"
           element={
-            <ProtectedRoute userType="Wholesaler">
+            <ProtectedRoute userType="wholesaler">
               <WholesalerProducts />
             </ProtectedRoute>
           }
@@ -53,7 +64,7 @@ function App() {
         <Route
           path="/wholesaler/cart"
           element={
-            <ProtectedRoute userType="Wholesaler">
+            <ProtectedRoute userType="wholesaler">
               <Cart />
             </ProtectedRoute>
           }
@@ -62,7 +73,7 @@ function App() {
         <Route
           path="/wholesaler/orders"
           element={
-            <ProtectedRoute userType="Wholesaler">
+            <ProtectedRoute userType="wholesaler">
               <WholesalerOrders />
             </ProtectedRoute>
           }
@@ -71,8 +82,17 @@ function App() {
         <Route
           path="/wholesaler/profile"
           element={
-            <ProtectedRoute userType="Wholesaler">
+            <ProtectedRoute userType="wholesaler">
               <Profile role="Wholesaler" />
+            </ProtectedRoute>
+          }
+        />
+
+        <Route
+          path="/wholesaler/dashboard"
+          element={
+            <ProtectedRoute userType="wholesaler">
+              <WholesalerDashboard />
             </ProtectedRoute>
           }
         />

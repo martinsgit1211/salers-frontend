@@ -14,6 +14,7 @@ function WholesalerLogin() {
   }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -32,12 +33,16 @@ function WholesalerLogin() {
       // Store token and user info
       localStorage.setItem('wholesalerToken', token);
       localStorage.setItem('wholesalerUser', JSON.stringify(user));
-      
-      login("Wholesaler", token); // Update the AuthContext with the logged-in user
+      localStorage.setItem("auth", JSON.stringify({ token, user }));
+setUser(user);
+      // Update the AuthContext with the logged-in user
+      // login("Wholesaler", token); // Update the AuthContext with the logged-in user
+      login("wholesaler", token); // Update the AuthContext with the logged-in user
 
       navigate('/wholesaler/dashboard');
     } catch (err) {
-      console.error('Login error:', err.response?.data?.message || err.message);
+      console.error(err);
+      setError(err.response?.data?.message || "Login failed");
     }
   };
 
@@ -51,6 +56,9 @@ function WholesalerLogin() {
           className="bg-[#1a1a1a] p-6 sm:p-8 rounded-lg shadow-lg w-full"
         >
           <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Wholesaler <span className="text-yellow-400">Login</span></h2>
+          {error && (
+              <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+            )}
           <div className="mb-4">
             <label className="block mb-1 text-sm sm:text-base">Email</label>
             <input

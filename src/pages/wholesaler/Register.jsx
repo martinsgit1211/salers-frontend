@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import Nav from '../../components/Nav';
+import axios from "axios";
 
 function WholesalerRegister() {
   useEffect(() => {
@@ -10,6 +11,8 @@ function WholesalerRegister() {
         document.title = originalTitle;
       };
     }, []);
+  const navigate = useNavigate();
+  const [error, setError] = useState("");
   const [businessName, setBusinessName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -27,7 +30,7 @@ function WholesalerRegister() {
     }
 
     try {
-      const res = await axios.post("http://localhost:5000/api/auth/register", {
+      const res = await axios.post("http://localhost:5000/api/auth/wholesaler/register", {
         name: businessName,
         email,
         password,
@@ -52,7 +55,9 @@ function WholesalerRegister() {
           className="bg-[#1a1a1a] p-6 sm:p-8 rounded-lg shadow-lg w-full"
         >
           <h2 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-center">Wholesaler <span className="text-yellow-400">Registration</span></h2>
-          
+          {error && (
+              <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+            )}
           <div className="mb-4">
             <label className="block mb-1 text-sm sm:text-base">Business Name</label>
             <input

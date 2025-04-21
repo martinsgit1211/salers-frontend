@@ -1,5 +1,6 @@
 import React, { useState, useContext , useEffect} from "react";
 import { Link , useNavigate} from "react-router-dom";
+import axios from "axios";
 import Nav from '../../components/Nav'
 import axiosInstance from "../../utils/axiosInstance";
 import { AuthContext } from "../../auth/AuthContext";
@@ -12,7 +13,9 @@ function ManufacturerLogin() {
         document.title = originalTitle;
       };
     }, []);
+  const [user, setUser] = useState(null);
   const [email, setEmail] = useState("");
+  const [error, setError] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
@@ -32,10 +35,15 @@ function ManufacturerLogin() {
       // Store token and user info
       localStorage.setItem('manufacturerToken', token);
       localStorage.setItem('manufacturerUser', JSON.stringify(user));
-      login("Manufacturer", token);
+      localStorage.setItem("auth", JSON.stringify({ token, user }));
+      setUser(user);
+      // Update the AuthContext with the logged-in user
+      // login("Manufacturer", token); // Update the AuthContext with the logged-in user
+      login("manufacturer", token);
       navigate('/manufacturer/dashboard');
     } catch (err) {
-      console.error('Login error:', err.response?.data?.message || err.message);
+      console.error(err);
+      setError(err.response?.data?.message || "Login failed");
     }
   };
 
@@ -49,6 +57,9 @@ function ManufacturerLogin() {
           className="bg-[#1a1a1a] p-5 sm:p-6 md:p-8 rounded-lg shadow-lg w-full"
         >
           <h2 className="text-xl sm:text-2xl md:text-3xl font-bold mb-4 sm:mb-6 text-center">Manufacturer <span className="text-yellow-400">Login</span> </h2>
+          {error && (
+              <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
+            )}
           <div className="mb-3 sm:mb-4">
             <label className="block mb-1 text-sm sm:text-base">Email</label>
             <input
