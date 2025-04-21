@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 function AddProductModal({ isOpen, onClose, onSubmit }) {
   const [formData, setFormData] = useState({
@@ -6,7 +7,7 @@ function AddProductModal({ isOpen, onClose, onSubmit }) {
     description: "",
     price: "",
     quantity: "",
-    image: null,
+    image: "",
   });
 
   const handleChange = (e) => {
@@ -17,10 +18,35 @@ function AddProductModal({ isOpen, onClose, onSubmit }) {
     });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    onSubmit(formData); // Hook for later backend integration
-    onClose();
+
+    // Prepare FormData to send the data to the backend
+    const data = new FormData();
+    data.append("name", formData.name);
+    data.append("description", formData.description);
+    data.append("price", formData.price);
+    data.append("stock", formData.quantity);
+    if (formData.image) {
+      data.append("image", formData.image); // Add image to FormData
+    }
+
+    try {
+      const res = await axios.post(
+        "http://localhost:5000/api/products/add", // Your backend endpoint
+        data,
+        {
+          headers: {
+            Authorization: `Bearer ${localStorage.getItem('manufacturerToken')}`, // Assuming JWT token is stored in localStorage
+            "Content-Type": "multipart/form-data", // Set the content type to multipart/form-data
+          },
+        }
+      );
+      onSubmit(res.data.product); // Call onSubmit after successful upload
+      onClose(); // Close the modal
+    } catch (err) {
+      console.error("Error adding product:", err.response?.data?.message || err.message);
+    }
   };
 
   if (!isOpen) return null;
