@@ -31,6 +31,21 @@ function ManufacturerProducts() {
   const handleAddProduct = (data) => {
     setProducts([...products, data]);
   };
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
+  
+    try {
+      await axios.delete(`http://localhost:5000/api/products/${id}`, {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('manufacturerToken')}`,
+        },
+      });
+      setProducts(products.filter((p) => p._id !== id));
+    } catch (err) {
+      alert(err.response?.data?.message || "Failed to delete product");
+    }
+  };
+  
 
   return (
     <div className="p-6">
@@ -54,18 +69,36 @@ function ManufacturerProducts() {
       <div className="bg-[#1c1c1c] p-4 rounded-lg border border-gray-700">
         {error && <p className="text-red-500">{error}</p>}
         {products.length > 0 ? (
-          <ul>
-            {products.map((product) => (
-              <li key={product._id} className="py-2">
-                <p className="text-white">{product.name}</p>
-                <p className="text-gray-400">{product.description}</p>
-                <p className="text-yellow-400">Price: ${product.price}</p>
-                <p className="text-gray-500">Stock: {product.stock}</p>
-              </li>
-            ))}
-          </ul>
+         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+         {products.map((product) => (
+           <div
+             key={product._id}
+             className="bg-[#2a2a2a] text-white rounded-lg shadow p-4 flex flex-col"
+           >
+             {product.image && (
+               <img
+                 src={`http://localhost:5000/${product.image}`}
+                 alt={product.name}
+                 className="w-full h-48 object-cover rounded mb-4"
+               />
+             )}
+             <h3 className="text-xl font-semibold">{product.name}</h3>
+             <p className="text-gray-300">{product.description}</p>
+             <p className="text-yellow-400 mt-2">Price: ₦{product.price}</p>
+             <p className="text-gray-400">Stock: {product.stock}</p>
+             <button
+        onClick={() => handleDelete(product._id)}
+        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+      >
+        Delete
+      </button>
+           </div>
+         ))}
+       </div>
+       
         ) : (
           <p className="text-gray-400">You have no products yet. Start by adding one.</p>
+          
         )}
       </div>
     </div>

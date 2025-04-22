@@ -1,5 +1,5 @@
 // src/context/AuthContext.jsx
-import React, { createContext, useState, useEffect } from "react";
+import React, { createContext, useState, useEffect, useContext } from "react";
 
 export const AuthContext = createContext();
 
@@ -25,12 +25,30 @@ export const AuthProvider = ({ children }) => {
     setUser({ role: userType, token });
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const token = localStorage.getItem("ManufacturerToken") || localStorage.getItem("WholesalerToken");
+  
+    try {
+      if (token) {
+        await fetch("http://localhost:5000/api/auth/logout", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
+          },
+        });
+      }
+    } catch (error) {
+      console.error("Logout error:", error);
+    }
+  
     localStorage.removeItem("ManufacturerToken");
     localStorage.removeItem("WholesalerToken");
     setUser(null);
     setCart([]);
   };
+  
+  
 
   // Cart Logic
   const addToCart = (product, quantity = 1) => {
