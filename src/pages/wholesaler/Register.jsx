@@ -34,7 +34,7 @@ function WholesalerRegister() {
         name: businessName,
         email,
         password,
-        role: "wholesaler",
+        role: "Wholesaler",
       });
 
       console.log("Registration successful:", res.data);

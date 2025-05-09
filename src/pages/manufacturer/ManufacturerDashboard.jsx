@@ -34,7 +34,7 @@ function ManufacturerDashboard() {
   return (
     <div className="min-h-screen md:pl-65 flex bg-[#0f0f0f] text-white">
       {/* Sidebar */}
-      <Sidebar role="manufacturer" />
+      <Sidebar role="Manufacturer" />
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col">

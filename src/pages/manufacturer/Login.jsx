@@ -39,7 +39,7 @@ function ManufacturerLogin() {
       setUser(user);
       // Update the AuthContext with the logged-in user
       // login("Manufacturer", token); // Update the AuthContext with the logged-in user
-      login("manufacturer", token);
+      login("Manufacturer", token, user);
       navigate('/manufacturer/dashboard');
     } catch (err) {
       console.error(err);

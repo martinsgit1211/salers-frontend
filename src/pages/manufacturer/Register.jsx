@@ -32,7 +32,7 @@ function ManufacturerRegister() {
         name: companyName,
         email,
         password,
-        role: "manufacturer",
+        role: "Manufacturer",
       });
 
       console.log("Registration successful:", res.data);

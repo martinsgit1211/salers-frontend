@@ -1,39 +1,46 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ShoppingCart } from "lucide-react";
+import { useAuth } from "../../auth/AuthContext"; // Custom hook to access auth context
 
 function WholesalerProducts() {
+  const [products, setProducts] = useState([]);
   const [cart, setCart] = useState([]);
+  const { user } = useAuth(); // get token for wholesaler
 
-  const products = [
-    {
-      id: 1,
-      name: "High Quality Rice",
-      price: 18000,
-      image: "https://via.placeholder.com/200",
-    },
-    {
-      id: 2,
-      name: "Cooking Oil (25L)",
-      price: 23000,
-      image: "https://via.placeholder.com/200",
-    },
-    {
-      id: 3,
-      name: "Spaghetti Pack (20pcs)",
-      price: 7500,
-      image: "https://via.placeholder.com/200",
-    },
-  ];
+  useEffect(() => {
+    const fetchProducts = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/api/products", {
+          headers: {
+            Authorization: `Bearer ${user?.token}`,
+          },
+        });
+
+        if (!res.ok) throw new Error("Failed to fetch products");
+
+        const data = await res.json();
+        setProducts(data);
+      } catch (err) {
+        console.error("Error loading products:", err.message);
+      }
+    };
+
+    if (user?.role === "Wholesaler") {
+      fetchProducts();
+    }
+  }, [user]);
 
   const handleAddToCart = (product, quantity) => {
-    const existing = cart.find((item) => item.id === product.id);
+    const existing = cart.find((item) => item.product._id === product._id);
     if (existing) {
       const updated = cart.map((item) =>
-        item.id === product.id ? { ...item, quantity: item.quantity + quantity } : item
+        item.product._id === product._id
+          ? { ...item, quantity: item.quantity + quantity }
+          : item
       );
       setCart(updated);
     } else {
-      setCart([...cart, { ...product, quantity }]);
+      setCart([...cart, { product, quantity }]);
     }
   };
 
@@ -43,11 +50,10 @@ function WholesalerProducts() {
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
-          <ProductCard key={product.id} product={product} onAddToCart={handleAddToCart} />
+          <ProductCard key={product._id} product={product} onAddToCart={handleAddToCart} />
         ))}
       </div>
 
-      {/* Cart Preview (optional, will flesh this out in the next step) */}
       {cart.length > 0 && (
         <div className="fixed bottom-4 right-4 bg-yellow-400 text-black px-4 py-2 rounded shadow-lg flex items-center gap-2 cursor-pointer">
           <ShoppingCart size={18} />
@@ -88,5 +94,6 @@ function ProductCard({ product, onAddToCart }) {
     </div>
   );
 }
+
 
 export default WholesalerProducts;

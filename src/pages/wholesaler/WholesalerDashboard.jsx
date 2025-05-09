@@ -16,7 +16,7 @@ function WholesalerDashboard() {
   return (
     <div className="min-h-screen flex bg-[#0f0f0f] text-white">
       {/* Sidebar */}
-      <Sidebar role="wholesaler" />
+      <Sidebar role="Wholesaler" />
 
       {/* Main content area */}
       <div className="flex-1 flex flex-col">

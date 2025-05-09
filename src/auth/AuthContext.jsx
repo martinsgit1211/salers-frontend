@@ -1,17 +1,19 @@
 // src/context/AuthContext.jsx
 import React, { createContext, useState, useEffect, useContext } from "react";
+// import { useNavigate } from "react-router-dom";
 
 export const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
   const [user, setUser] = useState(null); // {role: 'Manufacturer' or 'Wholesaler', ...}
   const [cart, setCart] = useState([]);
+  // const navigate = useNavigate();
 
   // Initialize user from localStorage token (if any)
   useEffect(() => {
     const tokenM = localStorage.getItem("ManufacturerToken");
     const tokenW = localStorage.getItem("WholesalerToken");
-
+    
     if (tokenM) {
       setUser({ role: "Manufacturer", token: tokenM });
     } else if (tokenW) {
@@ -20,9 +22,9 @@ export const AuthProvider = ({ children }) => {
   }, []);
 
   // Auth Actions
-  const login = (userType, token) => {
+  const login = (userType, token, userInfo) => {
     localStorage.setItem(`${userType}Token`, token);
-    setUser({ role: userType, token });
+    setUser({ role: userType, token, ...userInfo });
   };
 
   const logout = async () => {
@@ -46,6 +48,7 @@ export const AuthProvider = ({ children }) => {
     localStorage.removeItem("WholesalerToken");
     setUser(null);
     setCart([]);
+    // navigate("/");
   };
   
   
@@ -70,6 +73,14 @@ export const AuthProvider = ({ children }) => {
     setCart((prev) => prev.filter((item) => item.product._id !== productId));
   };
 
+  const updateCartQty = (id, qty) => {
+    setCart((prev) =>
+      prev.map((item) =>
+        item.product._id === id ? { ...item, quantity: qty } : item
+      )
+    );
+  };
+
   const clearCart = () => setCart([]);
 
   return (
@@ -81,6 +92,7 @@ export const AuthProvider = ({ children }) => {
         cart,
         addToCart,
         removeFromCart,
+        updateCartQty,
         clearCart,
       }}
     >

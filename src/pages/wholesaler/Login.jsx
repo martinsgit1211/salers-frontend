@@ -15,6 +15,7 @@ function WholesalerLogin() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
+  const [user, setUser] = useState(null);
   const navigate = useNavigate();
   const { login } = useContext(AuthContext);
 
@@ -34,10 +35,10 @@ function WholesalerLogin() {
       localStorage.setItem('wholesalerToken', token);
       localStorage.setItem('wholesalerUser', JSON.stringify(user));
       localStorage.setItem("auth", JSON.stringify({ token, user }));
-setUser(user);
+      setUser(user);
       // Update the AuthContext with the logged-in user
       // login("Wholesaler", token); // Update the AuthContext with the logged-in user
-      login("wholesaler", token); // Update the AuthContext with the logged-in user
+      login("Wholesaler", token); // Update the AuthContext with the logged-in user
 
       navigate('/wholesaler/dashboard');
     } catch (err) {

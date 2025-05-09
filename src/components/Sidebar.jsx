@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Package, ShoppingCart, User, LogOut } from "lucide-react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useAuth } from "../auth/AuthContext"; // adjust the path if needed
+import { useAuth } from "../auth/AuthContext"; // Adjust the path if needed
 
-function Sidebar({ role }) {
+function Sidebar({ onOpenAddProductModal }) {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   const links = {
     manufacturer: [
@@ -23,17 +23,17 @@ function Sidebar({ role }) {
   };
 
   const handleLogout = () => {
-    if (role === "manufacturer") {
+    if (user?.role === "manufacturer") {
       localStorage.removeItem("manufacturerToken");
       localStorage.removeItem("manufacturerUser");
       navigate("/manufacturer/login");
-    } else if (role === "wholesaler") {
+    } else if (user?.role === "wholesaler") {
       localStorage.removeItem("wholesalerToken");
       localStorage.removeItem("wholesalerUser");
       navigate("/wholesaler/login");
     }
 
-    logout(); // clear context if needed
+    logout(); // Clear context if needed
   };
 
   const toggleSidebar = () => {
@@ -45,9 +45,7 @@ function Sidebar({ role }) {
       {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className={`absolute top-4 left-4 md:hidden text-white p-3 rounded-full ${
-          isOpen ? "bg-yellow-400" : "bg-gray-700"
-        }`}
+        className={`absolute top-4 left-4 md:hidden text-white p-3 rounded-full ${isOpen ? "bg-yellow-400" : "bg-gray-700"}`}
         aria-label="Toggle Sidebar"
       >
         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
@@ -55,22 +53,37 @@ function Sidebar({ role }) {
 
       {/* Sidebar */}
       <div
-        className={`lg:w-64 w-0 transition-all duration-300 ease-in-out fixed h-full top-0 left-0 overflow-y-auto z-10 bg-[#1a1a1a] py-8 ${
-          isOpen ? "w-64" : "w-0"
-        }`}
+        className={`lg:w-64 w-0 transition-all duration-300 ease-in-out fixed h-full top-0 left-0 overflow-y-auto z-10 bg-[#1a1a1a] py-8 ${isOpen ? "w-64" : "w-0"}`}
       >
         <h1 className="text-xl font-bold mb-6 text-yellow-400 px-4">SaleHub</h1>
         <nav className="flex flex-col gap-4 px-4">
-          {links[role]?.map((link, idx) => (
-            <Link
-              key={idx}
-              to={link.to}
-              className="flex items-center gap-3 px-3 py-2 hover:bg-yellow-400 hover:text-black rounded transition"
-            >
-              {link.icon}
-              {link.label}
-            </Link>
-          ))}
+          {user?.role === "Manufacturer" && (
+            <>
+              <button
+                onClick={onOpenAddProductModal}
+                className="block w-full text-left mb-4 bg-yellow-500 px-4 py-2 rounded hover:bg-yellow-400"
+              >
+                ➕ Add Product
+              </button>
+              {links.manufacturer.map((link, idx) => (
+                <Link key={idx} to={link.to} className="flex items-center gap-3 px-3 py-2 hover:bg-yellow-400 hover:text-black rounded transition">
+                  {link.icon}
+                  {link.label}
+                </Link>
+              ))}
+            </>
+          )}
+
+          {user?.role === "Wholesaler" && (
+            <>
+              {links.wholesaler.map((link, idx) => (
+                <Link key={idx} to={link.to} className="flex items-center gap-3 px-3 py-2 hover:bg-yellow-400 hover:text-black rounded transition">
+                  {link.icon}
+                  {link.label}
+                </Link>
+              ))}
+            </>
+          )}
 
           {/* Logout Option */}
           <button
