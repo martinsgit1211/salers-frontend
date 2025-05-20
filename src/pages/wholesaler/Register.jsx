@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Nav from '../../components/Nav';
 import axios from "axios";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function WholesalerRegister() {
   useEffect(() => {
@@ -16,6 +17,8 @@ function WholesalerRegister() {
   const [businessName, setBusinessName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [businessType, setBusinessType] = useState("");
 
@@ -38,7 +41,11 @@ function WholesalerRegister() {
       });
 
       console.log("Registration successful:", res.data);
-      navigate("/wholesaler/login");
+      setMessage("Registration successful! Redirecting...");
+      setTimeout(() => {
+        navigate("/wholesaler/login");
+
+      }, 5000); // Redirect after 5 seconds
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Something went wrong");
@@ -58,6 +65,9 @@ function WholesalerRegister() {
           {error && (
               <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
             )}
+          {message && (
+            <p className="text-green-500 text-sm mb-4 text-center">{message}</p>
+          )}
           <div className="mb-4">
             <label className="block mb-1 text-sm sm:text-base">Business Name</label>
             <input
@@ -96,26 +106,36 @@ function WholesalerRegister() {
             />
           </div>
 
-          <div className="mb-4">
+          <div className="mb-4 relative">
             <label className="block mb-1 text-sm sm:text-base">Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 rounded bg-[#2a2a2a] text-white border border-gray-600 focus:outline-none focus:border-white"
               required
             />
+             <span
+              className="absolute top-11 sm:top-12 right-3 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+             </span>
           </div>
 
-          <div className="mb-5">
+          <div className="mb-5 relative">
             <label className="block mb-1 text-sm sm:text-base">Confirm Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={confirmPassword}
               onChange={(e) => setConfirmPassword(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 rounded bg-[#2a2a2a] text-white border border-gray-600 focus:outline-none focus:border-white"
               required
             />
+             <span
+              className="absolute top-11 sm:top-12 right-3 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+             </span>
           </div>
 
           <button

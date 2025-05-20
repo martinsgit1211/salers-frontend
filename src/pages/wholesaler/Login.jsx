@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import Nav from '../../components/Nav';
 import axiosInstance from "../../utils/axiosInstance";
 import { AuthContext } from "../../auth/AuthContext";
+import { FiEye, FiEyeOff } from "react-icons/fi";
 
 function WholesalerLogin() {
   useEffect(() => {
@@ -14,6 +15,8 @@ function WholesalerLogin() {
   }, []);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [message, setMessage] = useState("");
   const [error, setError] = useState("");
   const [user, setUser] = useState(null);
   const navigate = useNavigate();
@@ -22,7 +25,7 @@ function WholesalerLogin() {
   const handleLogin = async (e) => {
     e.preventDefault();
     // TODO: Handle login logic here
-    console.log("Login as Wholesaler:", { email, password });
+    // console.log("Login as Wholesaler:", { email, password });
     try {
       const res = await axiosInstance.post('http://localhost:5000/api/auth/wholesaler/login', {
         email,
@@ -36,11 +39,13 @@ function WholesalerLogin() {
       localStorage.setItem('wholesalerUser', JSON.stringify(user));
       localStorage.setItem("auth", JSON.stringify({ token, user }));
       setUser(user);
+      setMessage("Login successful! Redirecting...");
+      setTimeout(() => {
+      navigate('/wholesaler/dashboard');
+      }, 3000); // Redirect after 3 seconds
       // Update the AuthContext with the logged-in user
       // login("Wholesaler", token); // Update the AuthContext with the logged-in user
       login("Wholesaler", token); // Update the AuthContext with the logged-in user
-
-      navigate('/wholesaler/dashboard');
     } catch (err) {
       console.error(err);
       setError(err.response?.data?.message || "Login failed");
@@ -60,6 +65,9 @@ function WholesalerLogin() {
           {error && (
               <p className="text-red-500 text-sm mb-4 text-center">{error}</p>
             )}
+          {message && (
+              <p className="text-green-500 text-sm mb-4 text-center">{message}</p>
+            )}
           <div className="mb-4">
             <label className="block mb-1 text-sm sm:text-base">Email</label>
             <input
@@ -70,15 +78,20 @@ function WholesalerLogin() {
               required
             />
           </div>
-          <div className="mb-5">
+          <div className="mb-5 sm:mb-6 relative">
             <label className="block mb-1 text-sm sm:text-base">Password</label>
             <input
-              type="password"
+              type={showPassword ? "text" : "password"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="w-full px-3 sm:px-4 py-2 rounded bg-[#2a2a2a] text-white border border-gray-600 focus:outline-none focus:border-white"
               required
             />
+             <span
+              className="absolute top-11 sm:top-12 right-3 transform -translate-y-1/2 text-gray-400 cursor-pointer"
+              onClick={() => setShowPassword(!showPassword)}>
+              {showPassword ? <FiEyeOff /> : <FiEye />}
+             </span>
           </div>
           <button
             type="submit"

@@ -14,7 +14,7 @@ function WholesalerDashboard() {
   }, []);
 
   return (
-    <div className="min-h-screen flex bg-[#0f0f0f] text-white">
+    <div className="min-h-screen md:pl-65 flex bg-[#0f0f0f] text-white">
       {/* Sidebar */}
       <Sidebar role="Wholesaler" />
 

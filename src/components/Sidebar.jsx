@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { Package, ShoppingCart, User, LogOut } from "lucide-react";
 import { FaBars, FaTimes } from "react-icons/fa";
-import { useAuth } from "../auth/AuthContext"; // Adjust the path if needed
+import { useAuth } from "../auth/AuthContext"; // Adjust path as needed
 
-function Sidebar({ onOpenAddProductModal }) {
+function Sidebar() {
   const [isOpen, setIsOpen] = useState(false);
   const navigate = useNavigate();
   const { user, logout } = useAuth();
@@ -32,41 +32,55 @@ function Sidebar({ onOpenAddProductModal }) {
       localStorage.removeItem("wholesalerUser");
       navigate("/wholesaler/login");
     }
-
-    logout(); // Clear context if needed
+    logout();
   };
 
-  const toggleSidebar = () => {
-    setIsOpen(!isOpen);
-  };
+  const toggleSidebar = () => setIsOpen(!isOpen);
+  const closeSidebar = () => setIsOpen(false);
 
   return (
     <div>
-      {/* Toggle Button */}
+      {/* Toggle Button (Hamburger / Close) */}
+     
       <button
         onClick={toggleSidebar}
-        className={`absolute top-4 left-4 md:hidden text-white p-3 rounded-full ${isOpen ? "bg-yellow-400" : "bg-gray-700"}`}
+        className="absolute top-1 left-4 md:hidden text-white p-3 z-20 rounded-full"
+        aria-label="Toggle Sidebar"
+      >
+        {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
+      </button>
+      {/* Mobile Backdrop */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 bg-opacity-10 z-10 md:block md:bg-transparent"
+          onClick={closeSidebar}
+        />
+      )}
+
+      {/* Sidebar */}
+      <div
+        className={`fixed top-0 left-0 h-full z-20 bg-[#1a1a1a] py-8 px-4 transform transition-transform duration-300 ease-in-out
+        ${isOpen ? "translate-x-0 w-64" : "-translate-x-full w-64"} md:translate-x-0 md:w-64`}
+      >
+        <h1 className="text-xl font-bold mb-6 text-yellow-400">SaleHub</h1>
+        <button
+        onClick={toggleSidebar}
+        className="absolute top-5 left-40 md:hidden text-white p-3 z-20 rounded-full"
         aria-label="Toggle Sidebar"
       >
         {isOpen ? <FaTimes size={24} /> : <FaBars size={24} />}
       </button>
 
-      {/* Sidebar */}
-      <div
-        className={`lg:w-64 w-0 transition-all duration-300 ease-in-out fixed h-full top-0 left-0 overflow-y-auto z-10 bg-[#1a1a1a] py-8 ${isOpen ? "w-64" : "w-0"}`}
-      >
-        <h1 className="text-xl font-bold mb-6 text-yellow-400 px-4">SaleHub</h1>
-        <nav className="flex flex-col gap-4 px-4">
+        <nav className="flex flex-col gap-4">
           {user?.role === "Manufacturer" && (
             <>
-              <button
-                onClick={onOpenAddProductModal}
-                className="block w-full text-left mb-4 bg-yellow-500 px-4 py-2 rounded hover:bg-yellow-400"
-              >
-                ➕ Add Product
-              </button>
               {links.manufacturer.map((link, idx) => (
-                <Link key={idx} to={link.to} className="flex items-center gap-3 px-3 py-2 hover:bg-yellow-400 hover:text-black rounded transition">
+                <Link
+                  key={idx}
+                  to={link.to}
+                  onClick={closeSidebar}
+                  className="flex items-center gap-3 px-3 py-2 hover:bg-yellow-400 hover:text-black rounded transition"
+                >
                   {link.icon}
                   {link.label}
                 </Link>
@@ -77,7 +91,12 @@ function Sidebar({ onOpenAddProductModal }) {
           {user?.role === "Wholesaler" && (
             <>
               {links.wholesaler.map((link, idx) => (
-                <Link key={idx} to={link.to} className="flex items-center gap-3 px-3 py-2 hover:bg-yellow-400 hover:text-black rounded transition">
+                <Link
+                  key={idx}
+                  to={link.to}
+                  onClick={closeSidebar}
+                  className="flex items-center gap-3 px-3 py-2 hover:bg-yellow-400 hover:text-black rounded transition"
+                >
                   {link.icon}
                   {link.label}
                 </Link>
@@ -85,9 +104,12 @@ function Sidebar({ onOpenAddProductModal }) {
             </>
           )}
 
-          {/* Logout Option */}
+          {/* Logout */}
           <button
-            onClick={handleLogout}
+            onClick={() => {
+              handleLogout();
+              closeSidebar();
+            }}
             className="flex items-center gap-3 px-3 py-2 text-red-500 hover:bg-red-500 hover:text-white rounded transition"
           >
             <LogOut size={18} />

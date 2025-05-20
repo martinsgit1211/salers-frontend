@@ -28,6 +28,7 @@ function ManufacturerProducts() {
     fetchProducts();
   }, []);
 
+
   const handleAddProduct = (data) => {
     setProducts([...products, data]);
   };
@@ -50,13 +51,13 @@ function ManufacturerProducts() {
   return (
     <div className="p-6">
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-2xl font-bold">My Products</h2>
+        <h2 className="md:text-2xl text-8 font-bold">My Products</h2>
         <button
           onClick={() => setShowModal(true)}
-          className="flex items-center gap-2 bg-yellow-400 text-black px-4 py-2 rounded hover:bg-yellow-300 transition"
+          className="flex items-center gap-2 bg-yellow-400 text-white px-4 py-2 rounded hover:bg-yellow-300 transition"
         >
-          <Plus size={16} />
-          Add New Product
+          {/* <Plus size={16} /> */}
+          ➕ Add New Product
         </button>
       </div>
 
@@ -66,7 +67,7 @@ function ManufacturerProducts() {
         onSubmit={handleAddProduct}
       />
 
-      <div className="bg-[#1c1c1c] p-4 rounded-lg border border-gray-700">
+      <div>
         {error && <p className="text-red-500">{error}</p>}
         {products.length > 0 ? (
          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -77,7 +78,7 @@ function ManufacturerProducts() {
            >
              {product.image && (
                <img
-                 src={`http://localhost:5000/${product.image}`}
+                 src={product.image}
                  alt={product.name}
                  className="w-full h-48 object-cover rounded mb-4"
                />

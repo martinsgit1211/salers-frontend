@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { ShoppingCart } from "lucide-react";
-import { useAuth } from "../../auth/AuthContext"; // Custom hook to access auth context
+import { useAuth } from "../../auth/AuthContext";
+import { Link } from "react-router-dom"; // Don't forget this!
 
 function WholesalerProducts() {
   const [products, setProducts] = useState([]);
-  const [cart, setCart] = useState([]);
-  const { user } = useAuth(); // get token for wholesaler
+  const { user, cart, addToCart } = useAuth(); // use global cart & addToCart
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -30,36 +30,47 @@ function WholesalerProducts() {
     }
   }, [user]);
 
-  const handleAddToCart = (product, quantity) => {
-    const existing = cart.find((item) => item.product._id === product._id);
-    if (existing) {
-      const updated = cart.map((item) =>
-        item.product._id === product._id
-          ? { ...item, quantity: item.quantity + quantity }
-          : item
-      );
-      setCart(updated);
-    } else {
-      setCart([...cart, { product, quantity }]);
-    }
-  };
-
   return (
     <div className="p-6">
-      <h2 className="text-2xl font-bold mb-6">Available Products</h2>
+      <div className="flex justify-between items-center mb-6">
+        <span>
+      <h2 className="text-lg lg:text-2xl font-bold mb-6">Available Products</h2>
 
+        </span>
+        <span>
+               {cart.length === 0 ? (
+  <div className="fixed top-5 right-5 bg-yellow-400 text-black px-4 py-2 rounded shadow-lg flex items-center gap-2">
+    <ShoppingCart size={18} />
+    <span>Cart (0)</span>
+  </div>
+) : (
+  <Link
+    to="/wholesaler/cart"
+    className="fixed top-5 right-5 bg-yellow-400 text-black px-4 py-2 rounded shadow-lg flex items-center gap-2 cursor-pointer"
+  >
+    <ShoppingCart size={18} />
+    <span>
+      Cart ({cart.reduce((acc, item) => acc + item.quantity, 0)})
+    </span>
+  </Link>
+)}
+        </span>
+        </div>
+      {products.length === 0 && <p>No products available.</p>}
+      {products.length > 0 && (
+        <p className="mb-4">Select products to add to your cart.</p>
+      )}
+
+      {/* Add Product Modal Button */}
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
         {products.map((product) => (
-          <ProductCard key={product._id} product={product} onAddToCart={handleAddToCart} />
+          <ProductCard key={product._id} product={product} onAddToCart={addToCart} />
         ))}
       </div>
 
-      {cart.length > 0 && (
-        <div className="fixed bottom-4 right-4 bg-yellow-400 text-black px-4 py-2 rounded shadow-lg flex items-center gap-2 cursor-pointer">
-          <ShoppingCart size={18} />
-          <span>Cart ({cart.reduce((acc, item) => acc + item.quantity, 0)})</span>
-        </div>
-      )}
+   
+
+      
     </div>
   );
 }
@@ -68,20 +79,20 @@ function ProductCard({ product, onAddToCart }) {
   const [quantity, setQuantity] = useState(1);
 
   return (
-    <div className="bg-[#1c1c1c] border border-gray-700 rounded-lg overflow-hidden">
+    <div className="bg-[#1c1c1c] rounded-lg overflow-hidden shadow-lg w-3/4">
       <img src={product.image} alt={product.name} className="w-full h-40 object-cover" />
       <div className="p-4">
         <h3 className="text-xl font-semibold mb-2">{product.name}</h3>
-        <p className="text-yellow-400 font-medium mb-2">₦{product.price.toLocaleString()}</p>
+        <p className="text-yellow-400 font-medium mb-2">Price: ₦{product.price.toLocaleString()}</p>
         <div className="flex items-center gap-2 mb-4">
-          <label htmlFor="quantity" className="text-sm text-gray-400">Qty:</label>
+          <label htmlFor="quantity" className="text-sm text-gray-400">Quantity:</label>
           <input
             id="quantity"
             type="number"
             min="1"
             value={quantity}
             onChange={(e) => setQuantity(Number(e.target.value))}
-            className="w-16 px-2 py-1 text-black rounded"
+            className="w-16 px-2 py-1 text-yellow-200 rounded"
           />
         </div>
         <button
@@ -94,6 +105,5 @@ function ProductCard({ product, onAddToCart }) {
     </div>
   );
 }
-
 
 export default WholesalerProducts;

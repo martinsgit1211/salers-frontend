@@ -13,7 +13,13 @@ export const AuthProvider = ({ children }) => {
   useEffect(() => {
     const tokenM = localStorage.getItem("ManufacturerToken");
     const tokenW = localStorage.getItem("WholesalerToken");
-    
+    const storedAuth = JSON.parse(localStorage.getItem("auth"));
+
+    if (storedAuth?.token && storedAuth?.user) {
+      setUser(storedAuth.user);
+      // setToken(storedAuth.token);
+    }
+  
     if (tokenM) {
       setUser({ role: "Manufacturer", token: tokenM });
     } else if (tokenW) {
@@ -21,9 +27,12 @@ export const AuthProvider = ({ children }) => {
     }
   }, []);
 
+;
+
   // Auth Actions
   const login = (userType, token, userInfo) => {
     localStorage.setItem(`${userType}Token`, token);
+    localStorage.setItem("auth", JSON.stringify({ token, user: { ...userInfo, role: userType } }));
     setUser({ role: userType, token, ...userInfo });
   };
 
@@ -43,9 +52,9 @@ export const AuthProvider = ({ children }) => {
     } catch (error) {
       console.error("Logout error:", error);
     }
-  
     localStorage.removeItem("ManufacturerToken");
     localStorage.removeItem("WholesalerToken");
+    localStorage.removeItem("auth");
     setUser(null);
     setCart([]);
     // navigate("/");

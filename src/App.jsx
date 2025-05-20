@@ -13,6 +13,7 @@ import Cart from "./pages/wholesaler/Cart";
 import Profile from "./pages/shared/Profile";
 import Landing from "./pages/Landing";
 import ProtectedRoute from "./routes/ProtectedRoutes.jsx";
+import ManufacturerNotifications from "./components/Notification.jsx";
 
 function App() {
   return (
@@ -23,6 +24,8 @@ function App() {
         <Route path="/wholesaler/register" element={<WholesalerRegister />} />
         <Route path="/manufacturer/login" element={<ManufacturerLogin />} />
         <Route path="/wholesaler/login" element={<WholesalerLogin />} />
+        <Route path="/manufacturer/notifications" element={<ManufacturerNotifications />} />
+
 
         {/* Protected Routes */}
         <Route

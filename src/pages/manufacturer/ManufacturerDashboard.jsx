@@ -1,18 +1,42 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import {Link} from "react-router-dom"
 import Sidebar from "../../components/Sidebar";
 import Topbar from "../../components/Topbar";
 
 function ManufacturerDashboard() {
   const [companyName, setCompanyName] = useState("");
   const [productCount, setProductCount] = useState(0); // State to store the product count
+  const [notifications, setNotifications] = useState([]);
+  const [message, setMessage] = useState("");
 
   useEffect(() => {
+    
     // Get manufacturer data from localStorage
     const userData = JSON.parse(localStorage.getItem("manufacturerUser"));
+
+    const fetchNotifications = async () => {
+      try {
+        const token = localStorage.getItem("manufacturerToken");
+        const res = await axios.get("http://localhost:5000/api/notifications", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        });
+        setNotifications(res.data);
+      } catch (error) {
+        console.error("Failed to fetch notifications:", error.message);
+        setMessage("Failed to fetch notifications. Please try again later.");
+      }
+    };
+
+    fetchNotifications(); // Fetch notifications when the component mounts
+    // Set company name from user data
     if (userData && userData.companyName) {
       setCompanyName(userData.companyName);
     }
+
+    
 
     // Fetch product count from the backend
     const fetchProductCount = async () => {
@@ -29,6 +53,7 @@ function ManufacturerDashboard() {
     };
 
     fetchProductCount(); // Call the function to fetch the count
+    
   }, []);
 
   return (
@@ -44,7 +69,7 @@ function ManufacturerDashboard() {
         {/* Dashboard Content */}
         <main className="p-6">
           <h2 className="text-2xl font-bold mb-4">
-            Welcome back, {companyName ? companyName : "Manufacturer"} 👋
+            Welcome back, {companyName} 👋
           </h2>
           <p className="text-gray-400">Here's your dashboard overview.</p>
 
@@ -68,6 +93,29 @@ function ManufacturerDashboard() {
               <h3 className="text-lg font-semibold">Total Sales</h3>
               <p className="text-gray-400">Total sales made so far</p>
             </div>
+            <div className="bg-[#222222] p-6 rounded-lg shadow-md">
+            <h3 className="text-lg font-semibold mb-2">Recent Notifications</h3>
+            <Link
+  to="/manufacturer/notifications"
+  className="block py-2 px-4 hover:bg-gray-800 text-white"
+>
+  🔔 Notifications
+</Link>
+            {message && (
+              <p className="text-red-500 mb-2">{message}</p>
+            )}
+            {notifications.length === 0 ? (
+              <p className="text-gray-400">No notifications yet.</p>
+            ) : (
+              <ul className="space-y-2">
+                {notifications.map((note) => (
+                  <li key={note._id} className="text-gray-300">
+                    {note.message}
+                  </li>
+                ))}
+              </ul>
+            )}
+          </div>
           </div>
         </main>
       </div>

@@ -39,12 +39,11 @@ const Cart = () => {
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white p-6">
       <h2 className="text-2xl font-semibold mb-6">🛒 Your Cart</h2>
-
       {cart.length === 0 ? (
-        <p>Your cart is empty.</p>
+        <p className="text-center">Your cart is empty.</p>
       ) : (
         <>
-          <div className="grid gap-4">
+          <div className="grid gap-4 lg:w-[70%] lg:mx-auto">
             {cart.map((item) => (
               <div
                 key={item.product._id}
@@ -57,12 +56,12 @@ const Cart = () => {
                     className="w-16 h-16 object-cover rounded"
                   />
                   <div>
-                    <p className="font-medium">{item.product.name}</p>
-                    <p className="text-sm text-gray-400">₦{item.product.price}</p>
+                    <p className="font-medium text-lg">{item.product.name}</p>
+                    <p className="text-md text-gray-300">₦ {item.product.price}</p>
                   </div>
                 </div>
 
-                <div className="flex items-center gap-4">
+                <div className="flex items-center flex-col md:flex-row gap-2">
                   <input
                     type="number"
                     min={1}
@@ -70,11 +69,11 @@ const Cart = () => {
                     onChange={(e) =>
                       updateCartQty(item.product._id, parseInt(e.target.value))
                     }
-                    className="w-16 px-2 py-1 rounded bg-[#2a2a2a] text-white border border-gray-600"
+                    className="w-14 px-2 py-0 rounded bg-[#2a2a2a] text-white border border-gray-600"
                   />
                   <button
                     onClick={() => removeFromCart(item.product._id)}
-                    className="text-red-400 hover:text-red-300 text-sm"
+                    className="text-red-400 hover:text-red-300 lg:p-2 lg:text-sm p-0 text-0"
                   >
                     Remove
                   </button>
@@ -83,8 +82,8 @@ const Cart = () => {
             ))}
           </div>
 
-          <div className="mt-6 flex justify-between items-center">
-            <p className="text-lg font-semibold">Total: ₦{total.toLocaleString()}</p>
+          <div className="mt-6 flex fixed bottom-4 gap-4 justify-center md:right-130 border rounded-lg pl-5 border-gray-700 items-center">
+            <p className="text-lg font-semibold">Total: ₦ {total.toLocaleString()}</p>
             <button
               onClick={handlePlaceOrder}
               className="bg-yellow-400 text-black px-6 py-2 rounded-lg hover:bg-yellow-300 transition"

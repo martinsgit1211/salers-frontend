@@ -8,7 +8,9 @@ function ProtectedRoute({ children, userType }) {
   const location = useLocation();
 
   const token = localStorage.getItem(`${userType}Token`);
-  const isAuthenticated = token && user?.role === userType;
+  const storedAuth = JSON.parse(localStorage.getItem('auth'));
+  const role = storedAuth?.user?.role || user?.role;
+  const isAuthenticated = token && role === userType;
 
   return isAuthenticated ? (
     children
