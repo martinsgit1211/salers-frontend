@@ -11,7 +11,6 @@ function ManufacturerDashboard() {
   const [message, setMessage] = useState("");
 
   useEffect(() => {
-    
     // Get manufacturer data from localStorage
     const userData = JSON.parse(localStorage.getItem("manufacturerUser"));
 
@@ -35,8 +34,6 @@ function ManufacturerDashboard() {
     if (userData && userData.companyName) {
       setCompanyName(userData.companyName);
     }
-
-    
 
     // Fetch product count from the backend
     const fetchProductCount = async () => {
@@ -76,44 +73,52 @@ function ManufacturerDashboard() {
           {/* Example of a responsive grid */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mt-6">
             {/* Total Products Summary Card */}
-            <div className="bg-[#222222] p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-semibold">Total Products</h3>
+            <Link to='/manufacturer/products' className="bg-[#222222] hover:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-lg text-yellow-400 font-semibold">Total Products</h3>
               <p className="text-gray-400">Number of products listed</p>
               <h4 className="text-xl font-bold mt-4">{productCount}</h4> {/* Display the product count */}
-            </div>
+            </Link>
 
             {/* Orders Pending Summary Card */}
-            <div className="bg-[#222222] p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-semibold">Orders Pending</h3>
+            <Link to='/manufacturer/orders' className="bg-[#222222] hover:bg-gray-800 p-6 rounded-lg shadow-md">
+              <h3 className="text-lg text-yellow-400 font-semibold">Orders Pending</h3>
               <p className="text-gray-400">Orders awaiting confirmation</p>
-            </div>
+            </Link>
 
             {/* Total Sales Summary Card */}
             <div className="bg-[#222222] p-6 rounded-lg shadow-md">
-              <h3 className="text-lg font-semibold">Total Sales</h3>
+              <h3 className="text-lg text-yellow-400 font-semibold">Total Sales</h3>
               <p className="text-gray-400">Total sales made so far</p>
             </div>
-            <div className="bg-[#222222] p-6 rounded-lg shadow-md">
+            <div className="bg-[#222222] hover:bg-gray-800 p-6 rounded-lg shadow-md">
             <h3 className="text-lg font-semibold mb-2">Recent Notifications</h3>
-            <Link
-  to="/manufacturer/notifications"
-  className="block py-2 px-4 hover:bg-gray-800 text-white"
->
-  🔔 Notifications
-</Link>
             {message && (
               <p className="text-red-500 mb-2">{message}</p>
             )}
             {notifications.length === 0 ? (
-              <p className="text-gray-400">No notifications yet.</p>
+             <Link to='/manufacturer/notifications'>
+               <p className="text-gray-400">No notifications yet.</p>
+             </Link>
+              
             ) : (
-              <ul className="space-y-2">
+               <Link
+                to="/manufacturer/notifications"
+                className="block py-2 px-4 text-white"
+               >
+                <p className="text-yellow-400 font-semibold mb-2">
+                  🔔 You've got notifications!
+
+                </p>
+              
+               <ul className="space-y-2">
                 {notifications.map((note) => (
-                  <li key={note._id} className="text-gray-300">
+                  <li key={note._id} className="text-gray-300 text-sm">
                     {note.message}
                   </li>
                 ))}
               </ul>
+            </Link> 
+             
             )}
           </div>
           </div>

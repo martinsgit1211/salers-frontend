@@ -89,7 +89,7 @@ function ManufacturerProducts() {
              <p className="text-gray-400">Stock: {product.stock}</p>
              <button
         onClick={() => handleDelete(product._id)}
-        className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600 transition"
+        className="bg-red-500 text-white px-3 py-1 mt-4 rounded hover:bg-red-600 transition"
       >
         Delete
       </button>

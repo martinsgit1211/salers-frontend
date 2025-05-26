@@ -6,9 +6,10 @@ const Orders = () => {
   const [loading, setLoading] = useState(true);
 
   const statusStyles = {
-    Pending: "bg-yellow-500",
+    Pending: "bg-yellow-500 text-gray-800",
     Shipped: "bg-blue-500",
     Delivered: "bg-green-500",
+    Cancelled: "bg-red-500",
   };
 
   useEffect(() => {
@@ -63,18 +64,24 @@ const Orders = () => {
             >
               <div className="flex justify-between items-center mb-2">
                 <div>
-                  <p className="font-semibold text-lg">Order #{order._id.slice(-5)}</p>
+                  <p className="font-semibold text-yellow-400 text-lg">Order #{order._id.slice(-5)}</p>
+                  {/* <p>Status: {order.status}</p> */}
+                  {/* <p>Total: ₦{order.total}</p> */}
                   <p className="text-sm text-gray-400">
                     Date: {new Date(order.createdAt).toLocaleDateString()}
                   </p>
                 </div>
+                <div>
                 <span
                   className={`text-xs px-3 py-1 rounded-full font-semibold ${statusStyles[order.status] || "bg-gray-500"}`}
                 >
                   {order.status}
                 </span>
-              </div>
+              
+                </div>
 
+              </div>
+<div className="flex flex-row gap-4 justify-between items-center">
               <div className="text-sm text-gray-300 mb-2">
                 {order.items.map((item, index) => (
                   <p key={index}>
@@ -87,10 +94,13 @@ const Orders = () => {
                   </p>
                 ))}
               </div>
-
-              <div className="text-right font-semibold">
+               <div className="text-right font-semibold">
                 Total: ₦{order.total.toLocaleString()}
               </div>
+
+</div>
+
+              
             </div>
           ))}
         </div>

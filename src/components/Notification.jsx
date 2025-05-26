@@ -27,6 +27,27 @@ const ManufacturerNotifications = () => {
     fetchNotifications();
   }, []);
 
+  const updateOrderStatus = async (orderId, newStatus) => {
+  try {
+    const token = localStorage.getItem("manufacturerToken");
+    await axios.put(
+      `http://localhost:5000/api/orders/${orderId}/status`,
+      { status: newStatus },
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    alert(`Order marked as ${newStatus}`);
+    // Refresh notifications or orders list
+  } catch (err) {
+    console.error("Failed to update status", err);
+    alert("Error updating status");
+  }
+};
+
+
   if (loading) {
     return <div className="text-white p-4">Loading notifications...</div>;
   }
@@ -48,6 +69,23 @@ const ManufacturerNotifications = () => {
               <p className="text-xs text-gray-500 mt-1">
                 {new Date(note.createdAt).toLocaleString()}
               </p>
+              <p className="text-xs text-gray-500 mt-1">
+                Status: {note.status}
+              </p>
+              <button
+  onClick={() => updateOrderStatus(note.orderId, "Shipped")}
+  className="bg-blue-600 text-white px-3 py-1 rounded mr-2"
+>
+  Mark as Shipped
+</button>
+
+<button
+  onClick={() => updateOrderStatus(note.orderId, "Cancelled")}
+  className="bg-red-600 text-white px-3 py-1 rounded"
+>
+  Cancel Order
+</button>
+
             </li>
           ))}
         </ul>
