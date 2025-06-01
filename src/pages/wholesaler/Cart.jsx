@@ -1,6 +1,6 @@
 import React from "react";
 import { useAuth } from "../../auth/AuthContext";
-import { useNavigate } from "react-router-dom";
+// import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const {cart, 
@@ -9,7 +9,7 @@ const Cart = () => {
         user, 
         //clearCart 
         } = useAuth();
-  const navigate = useNavigate();
+  // const navigate = useNavigate();
   const total = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
@@ -38,7 +38,9 @@ const Cart = () => {
         //   state: { items: cart, totalAmount: total },
         // });
       } else {
-        alert("Failed to place order");
+        // alert("Failed to place order");
+        alert("Order placed successfully!");
+
       }
     } catch (err) {
       console.error("Order error:", err);
