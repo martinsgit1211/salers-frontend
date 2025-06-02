@@ -14,7 +14,7 @@ import Profile from "./pages/shared/Profile";
 import Landing from "./pages/Landing";
 import ProtectedRoute from "./routes/ProtectedRoutes.jsx";
 import ManufacturerNotifications from "./components/Notification.jsx";
-// import CheckoutPayment from "./pages/Checkout.jsx";
+import CheckoutPayment from "./components/CheckoutPayment.jsx";
 
 function App() {
   return (
@@ -26,7 +26,7 @@ function App() {
         <Route path="/manufacturer/login" element={<ManufacturerLogin />} />
         <Route path="/wholesaler/login" element={<WholesalerLogin />} />
         <Route path="/manufacturer/notifications" element={<ManufacturerNotifications />} />
-        {/* <Route path="/checkoutpayment" element={<CheckoutPayment />} /> */}
+        <Route path="/checkoutpayment" element={<CheckoutPayment />} />
 
 
         {/* Protected Routes */}

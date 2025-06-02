@@ -1,6 +1,7 @@
-import React from "react";
+import { useState } from "react";
+// import React { useState } from "react";
 import { useAuth } from "../../auth/AuthContext";
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 const Cart = () => {
   const {cart, 
@@ -9,43 +10,49 @@ const Cart = () => {
         user, 
         //clearCart 
         } = useAuth();
-  // const navigate = useNavigate();
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
   const total = cart.reduce(
     (sum, item) => sum + item.product.price * item.quantity,
     0
   );
 
-  const handlePlaceOrder = async () => {
-    try {
-      const res = await fetch("http://localhost:5000/api/orders", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${user.token}`,
-        },
-        body: JSON.stringify({
-          items: cart.map((item) => ({
-            product: item.product._id,
-            quantity: item.quantity,
-          })),
-        }),
+ const handlePlaceOrder = async () => {
+  setLoading(true);
+  try {
+    const res = await fetch("http://localhost:5000/api/orders", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${user.token}`,
+      },
+      body: JSON.stringify({
+        items: cart.map((item) => ({
+          product: item.product._id,
+          quantity: item.quantity,
+        })),
+      }),
+    });
+
+    if (res.ok) {
+      // Store to localStorage before navigation
+      localStorage.setItem("cart", JSON.stringify(cart));
+      localStorage.setItem("total", JSON.stringify(total));
+
+      setLoading(false);
+      navigate("/checkoutpayment", {
+        state: { items: cart, totalAmount: total },
       });
-
-      if (res.ok) {
-        // clearCart();
-        alert("Order placed successfully!");
-        // navigate("/checkoutpayment", {
-        //   state: { items: cart, totalAmount: total },
-        // });
-      } else {
-        // alert("Failed to place order");
-        alert("Order placed successfully!");
-
-      }
-    } catch (err) {
-      console.error("Order error:", err);
+    } else {
+      setLoading(false);
+      alert("Failed to place order");
     }
-  };
+  } catch (err) {
+    console.error("Order error:", err);
+    setLoading(false);
+  }
+};
+
 
   return (
     <div className="min-h-screen bg-[#0f0f0f] text-white p-6">
@@ -99,7 +106,7 @@ const Cart = () => {
               onClick={handlePlaceOrder}
               className="bg-yellow-400 text-black px-6 py-2 rounded-lg hover:bg-yellow-300 transition"
             >
-              Proceed to Checkout
+               {loading ? "Processing..." : "Proceed to Checkout"}
             </button>
           </div>
         </>
