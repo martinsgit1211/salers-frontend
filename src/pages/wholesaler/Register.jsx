@@ -34,7 +34,7 @@ function WholesalerRegister() {
 
     try {
       const res = await axios.post("http://localhost:5000/api/auth/wholesaler/register", {
-  companyName: businessName,   // 👈 FIXED
+  companyName: businessName,
   email,
   password,
   businessType,
