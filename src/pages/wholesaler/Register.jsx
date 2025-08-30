@@ -34,11 +34,13 @@ function WholesalerRegister() {
 
     try {
       const res = await axios.post("http://localhost:5000/api/auth/wholesaler/register", {
-        name: businessName,
-        email,
-        password,
-        role: "Wholesaler",
-      });
+  companyName: businessName,   // 👈 FIXED
+  email,
+  password,
+  businessType,
+  role: "Wholesaler",
+});
+
 
       console.log("Registration successful:", res.data);
       setMessage("Registration successful! Redirecting...");
